@@ -24,29 +24,43 @@ const solanaMetadata = {
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
-    growEditionSizeTo: 5,
+    growEditionSizeTo: 10,
     layersOrder: [
-      { name: "Background" },
-      { name: "Eyeball" },
-      { name: "Eye color" },
-      { name: "Iris" },
-      { name: "Shine" },
-      { name: "Bottom lid" },
-      { name: "Top lid" },
+      // { name: "Background" },
+      { name: "Skin" },
+      { name: "Nose" },
+      { name: "Eyes" },
+      { name: "Suit" },
+      { name: "Glasses" },
+      { name: "Head" },
+      { name: "Mouth" },
+    ],
+  },
+  {
+    growEditionSizeTo: 20,
+    layersOrder: [
+      // { name: "Background rare" },
+      { name: "Skin" },
+      { name: "Nose" },
+      { name: "Eyes rare" },
+      { name: "Suit rare" },
+      { name: "Glasses rare" },
+      { name: "Head rare" },
+      { name: "Mouth rare" },
     ],
   },
 ];
 
-const shuffleLayerConfigurations = false;
+const shuffleLayerConfigurations = true;
 
-const deterministicallyRandom = false;
-const seed = "Input Seed Here";
+const deterministicallyRandom = true;
+const seed = "005";
 
 const debugLogs = false;
 
 const format = {
-  width: 512,
-  height: 512,
+  width: 1200,
+  height: 1200,
   smoothing: false,
 };
 
@@ -76,10 +90,23 @@ const pixelFormat = {
 
 const background = {
   generate: true,
-  brightness: "80%",
+  brightness: "50%",
   static: false,
   default: "#000000",
 };
+
+const backgroundColorList = [
+  '#DB9DBC',
+  '#FA4339',
+  '#1C2F56',
+  '#16544E',
+  '#E02F55',
+  '#DC781B',
+  '#0176CB',
+  '#E56674',
+  '#70459B',
+  '#94D69D',
+]
 
 const extraMetadata = {};
 
@@ -88,15 +115,15 @@ const rarityDelimiter = "#";
 const uniqueDnaTorrance = 10000;
 
 const preview = {
-  thumbPerRow: 5,
-  thumbWidth: 50,
+  thumbPerRow: 10,
+  thumbWidth: 500,
   imageRatio: format.height / format.width,
   imageName: "preview.png",
 };
 
 const preview_gif = {
-  numberOfImages: 5,
-  order: "ASC", // ASC, DESC, MIXED
+  numberOfImages: 10,
+  order: "MIXED", // ASC, DESC, MIXED
   repeat: 0,
   quality: 100,
   delay: 500,
@@ -108,6 +135,7 @@ module.exports = {
   baseUri,
   description,
   background,
+  backgroundColorList,
   uniqueDnaTorrance,
   layerConfigurations,
   rarityDelimiter,

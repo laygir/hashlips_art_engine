@@ -26,7 +26,7 @@ const rawdata = fs.readdirSync(imageDir).forEach((file) => {
 const saveProjectPreviewGIF = async (_data) => {
   // Extract from preview config
   const { numberOfImages, order, repeat, quality, delay, imageName } =
-    preview_gif;
+  preview_gif;
   // Extract from format config
   const { width, height } = format;
   // Prepare canvas
@@ -82,6 +82,7 @@ const saveProjectPreviewGIF = async (_data) => {
           previewCanvasHeight
         );
         hashlipsGiffer.add();
+        ctx.clearRect(0, 0, width, height);
       });
     });
     hashlipsGiffer.stop();

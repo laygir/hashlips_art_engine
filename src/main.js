@@ -12,6 +12,7 @@ const {
   baseUri,
   description,
   background,
+  backgroundColorList,
   uniqueDnaTorrance,
   layerConfigurations,
   rarityDelimiter,
@@ -116,9 +117,14 @@ const saveImage = (_editionCount) => {
   );
 };
 
+
 const genColor = (_editionCount, _failedCount) => {
   let hue = Math.floor(psuedoRandom(_editionCount, _failedCount) * 360);
-  let pastel = `hsl(${hue}, 100%, ${background.brightness})`;
+  let randomIndex = Math.floor(psuedoRandom(_editionCount, _failedCount) * backgroundColorList?.length);
+
+
+  let pastel = backgroundColorList[randomIndex];
+  // let pastel = `hsl(${hue}, 100%, ${background.brightness})`;
   return pastel;
 };
 
