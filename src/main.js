@@ -144,7 +144,6 @@ const addMetadata = (_dna, _edition) => {
     date: dateTime,
     ...extraMetadata,
     attributes: attributesList,
-    compiler: "HashLips Art Engine",
   };
   if (network == NETWORK.sol) {
     tempMetadata = {
@@ -290,7 +289,7 @@ const createDna = (_layers, _editionCount, _failedCount) => {
     // number between 0 - totalWeight
     let random = Math.floor(
        psuedoRandom(_editionCount, _failedCount, index) * totalWeight
-     );
+    );
     for (var i = 0; i < layer.elements.length; i++) {
       // subtract the current weight from the random weight until we reach a sub zero value.
       random -= layer.elements[i].weight;

@@ -5,9 +5,9 @@ const { NETWORK } = require(`${basePath}/constants/network.js`);
 const network = NETWORK.eth;
 
 // General metadata for Ethereum
-const namePrefix = "Your Collection";
-const description = "Remember to replace this description";
-const baseUri = "ipfs://NewUriToReplace";
+const namePrefix = "The Gentlemen Club";
+const description = "The most basic ever";
+const baseUri = "ipfs://xxx";
 
 const solanaMetadata = {
   symbol: "YC",
@@ -26,42 +26,32 @@ const layerConfigurations = [
   {
     growEditionSizeTo: 10,
     layersOrder: [
-      // { name: "Background" },
-      { name: "Skin" },
-      { name: "Nose" },
+      { name: "Background" },
+      { name: "Face" },
       { name: "Eyes" },
-      { name: "Suit" },
-      { name: "Glasses" },
-      { name: "Head" },
+      { name: "Clothes" },
       { name: "Mouth" },
-    ],
-  },
-  {
-    growEditionSizeTo: 20,
-    layersOrder: [
-      // { name: "Background rare" },
-      { name: "Skin" },
+      { name: "Head" },
+      { name: "Eye Wear" },
       { name: "Nose" },
-      { name: "Eyes rare" },
-      { name: "Suit rare" },
-      { name: "Glasses rare" },
-      { name: "Head rare" },
-      { name: "Mouth rare" },
+      // { name: "Pie" },
+      // { name: "SmallCircle" },
+      // { name: "Donut" },
     ],
   },
 ];
 
 const shuffleLayerConfigurations = true;
 
-const deterministicallyRandom = true;
-const seed = "005";
+const deterministicallyRandom = false;
+const seed = "007";
 
 const debugLogs = false;
 
 const format = {
-  width: 1200,
-  height: 1200,
-  smoothing: false,
+  width: 2400,
+  height: 2400,
+  smoothing: true,
 };
 
 const gif = {
@@ -85,11 +75,11 @@ const text = {
 };
 
 const pixelFormat = {
-  ratio: 2 / 128,
+  ratio: 3 / 64,
 };
 
 const background = {
-  generate: true,
+  generate: false,
   brightness: "50%",
   static: false,
   default: "#000000",
