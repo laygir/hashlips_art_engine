@@ -6,6 +6,7 @@ npm-debug.log_
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log\*
+.DS_Store
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 
@@ -142,3 +143,4 @@ dist
 # OSX
 
 .DS_Store
+layers/.DS_Store
