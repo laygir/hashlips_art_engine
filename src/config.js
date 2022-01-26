@@ -1,6 +1,10 @@
 const basePath = process.cwd();
+const path = require("path");
 const { MODE } = require(`${basePath}/constants/blend_mode.js`);
 const { NETWORK } = require(`${basePath}/constants/network.js`);
+
+const buildDir = path.join(basePath, "/build");
+const layersDir = path.join(basePath, "/layers");
 
 const network = NETWORK.eth;
 
@@ -9,23 +13,27 @@ const namePrefix = "The Gentlemen Club";
 const description = "The most basic ever";
 const baseUri = "ipfs://xxx";
 
-const solanaMetadata = {
-  symbol: "YC",
-  seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
-  external_url: "https://www.youtube.com/c/hashlipsnft",
-  creators: [
-    {
-      address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
-      share: 100,
-    },
-  ],
-};
+//If you need a provenance hash, turn this on
+const hashImages = true;
+
+// const solanaMetadata = {
+//   symbol: "YC",
+//   seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
+//   external_url: "https://www.youtube.com/c/hashlipsnft",
+//   creators: [
+//     {
+//       address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
+//       share: 100,
+//     },
+//   ],
+// };
 
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
-    growEditionSizeTo: 10,
+    growEditionSizeTo: 10000,
     layersOrder: [
+      // { name: "Test" },
       { name: "Background" },
       { name: "Face" },
       { name: "Eyes" },
@@ -43,8 +51,8 @@ const layerConfigurations = [
 
 const shuffleLayerConfigurations = true;
 
-const deterministicallyRandom = false;
-const seed = "007";
+const deterministicallyRandom = true;
+const seed = "01189998819991197253";
 
 const debugLogs = false;
 
@@ -86,17 +94,17 @@ const background = {
 };
 
 const backgroundColorList = [
-  '#DB9DBC',
-  '#FA4339',
-  '#1C2F56',
-  '#16544E',
-  '#E02F55',
-  '#DC781B',
-  '#0176CB',
-  '#E56674',
-  '#70459B',
-  '#94D69D',
-]
+  "#DB9DBC",
+  "#FA4339",
+  "#1C2F56",
+  "#16544E",
+  "#E02F55",
+  "#DC781B",
+  "#0176CB",
+  "#E56674",
+  "#70459B",
+  "#94D69D",
+];
 
 const extraMetadata = {};
 
@@ -121,6 +129,8 @@ const preview_gif = {
 };
 
 module.exports = {
+  buildDir,
+  layersDir,
   format,
   baseUri,
   description,
@@ -139,7 +149,8 @@ module.exports = {
   text,
   namePrefix,
   network,
-  solanaMetadata,
+  // solanaMetadata,
   gif,
   preview_gif,
+  hashImages,
 };
