@@ -2,6 +2,7 @@ const basePath = process.cwd();
 const { NETWORK } = require(`${basePath}/constants/network.js`);
 const fs = require("fs");
 const sha1 = require(`${basePath}/node_modules/sha1`);
+const keccak256 = require("keccak256");
 const { createCanvas, loadImage } = require(`${basePath}/node_modules/canvas`);
 const { psuedoRandom } = require("./helpers/psuedoRandom");
 const buildDir = `${basePath}/build`;
@@ -24,6 +25,7 @@ const {
   network,
   solanaMetadata,
   gif,
+  hashImages,
 } = require(`${basePath}/src/config.js`);
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
@@ -115,13 +117,14 @@ const saveImage = (_editionCount) => {
     `${buildDir}/images/${_editionCount}.png`,
     canvas.toBuffer("image/png")
   );
+  console.log("did save");
 };
-
 
 const genColor = (_editionCount, _failedCount) => {
   let hue = Math.floor(psuedoRandom(_editionCount, _failedCount) * 360);
-  let randomIndex = Math.floor(psuedoRandom(_editionCount, _failedCount) * backgroundColorList?.length);
-
+  let randomIndex = Math.floor(
+    psuedoRandom(_editionCount, _failedCount) * backgroundColorList?.length
+  );
 
   let pastel = backgroundColorList[randomIndex];
   // let pastel = `hsl(${hue}, 100%, ${background.brightness})`;
@@ -133,13 +136,16 @@ const drawBackground = (_editionCount, _failedCount) => {
   ctx.fillRect(0, 0, format.width, format.height);
 };
 
-const addMetadata = (_dna, _edition) => {
+const addMetadata = (_dna, _edition, _prefixData) => {
   let dateTime = Date.now();
+  const { _imageHash } = _prefixData;
+
   let tempMetadata = {
     name: `${namePrefix} #${_edition}`,
     description: description,
     image: `${baseUri}/${_edition}.png`,
     dna: sha1(_dna),
+    ...(hashImages === true && { imageHash: _imageHash }),
     edition: _edition,
     date: dateTime,
     ...extraMetadata,
@@ -235,6 +241,15 @@ const constructLayerToDna = (_dna = "", _layers = []) => {
 };
 
 /**
+ * Given some input, creates a sha256 hash.
+ * @param {Object} input
+ */
+const hash = (input) => {
+  const hashable = typeof input === Buffer ? input : JSON.stringify(input);
+  return keccak256(hashable).toString("hex");
+};
+
+/**
  * In some cases a DNA string may contain optional query parameters for options
  * such as bypassing the DNA isUnique check, this function filters out those
  * items without modifying the stored DNA.
@@ -288,7 +303,7 @@ const createDna = (_layers, _editionCount, _failedCount) => {
     });
     // number between 0 - totalWeight
     let random = Math.floor(
-       psuedoRandom(_editionCount, _failedCount, index) * totalWeight
+      psuedoRandom(_editionCount, _failedCount, index) * totalWeight
     );
     for (var i = 0; i < layer.elements.length; i++) {
       // subtract the current weight from the random weight until we reach a sub zero value.
@@ -361,7 +376,7 @@ const startCreating = async () => {
     while (
       editionCount <= layerConfigurations[layerConfigIndex].growEditionSizeTo
     ) {
-      let newDna =createDna(layers, editionCount, failedCount);
+      let newDna = createDna(layers, editionCount, failedCount);
       if (isDnaUnique(dnaList, newDna)) {
         let results = constructLayerToDna(newDna, layers);
         let loadedElements = [];
@@ -403,8 +418,16 @@ const startCreating = async () => {
           debugLogs
             ? console.log("Editions left to create: ", abstractedIndexes)
             : null;
+
           saveImage(abstractedIndexes[0]);
-          addMetadata(newDna, abstractedIndexes[0]);
+
+          const savedFile = fs.readFileSync(
+            `${buildDir}/images/${abstractedIndexes[0]}.png`
+          );
+          const _imageHash = hash(savedFile);
+          console.log("_imageHash", _imageHash);
+
+          addMetadata(newDna, abstractedIndexes[0], { _imageHash });
           saveMetaDataSingleFile(abstractedIndexes[0]);
           console.log(
             `Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(
@@ -412,6 +435,7 @@ const startCreating = async () => {
             )}`
           );
         });
+
         dnaList.add(filterDNAOptions(newDna));
         editionCount++;
         abstractedIndexes.shift();
